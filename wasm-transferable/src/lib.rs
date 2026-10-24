@@ -3,10 +3,15 @@ use std::vec;
 use js_sys::{Array, ArrayIntoIter, Uint8Array};
 use wasm_bindgen::{JsCast, JsValue};
 
-mod extensions;
+pub mod extensions;
 
 #[cfg(feature = "derive")]
 pub use wasm_transferable_macro::Transferable;
+
+pub struct SerializeResult {
+    pub data: JsValue,
+    pub transfers: Array
+}
 
 pub enum DeserializerInitializationError {
     Format
@@ -19,7 +24,7 @@ pub enum DeserializeError {
 pub struct Serializer {
     binary: Vec<u8>,
     values: Array,
-    transfer_values: Array
+    transfers: Array
 }
 
 impl Serializer {
@@ -27,30 +32,32 @@ impl Serializer {
         Self {
             binary: Vec::new(),
             values: Array::new(),
-            transfer_values: Array::new(),
+            transfers: Array::new(),
         }
     }
 
-    pub fn end(self) -> (JsValue, Array) {
+    pub fn end(self) -> SerializeResult {
         let Self {
             binary,
             values,
-            transfer_values,
+            transfers,
         } = self;
 
         // バイナリをUint8Arrayにして、valuesの先頭に追加
         let binary_buf = Uint8Array::new_from_slice(&binary);
         values.unshift(&binary_buf);
-        transfer_values.unshift(&binary_buf);
+        transfers.push(&binary_buf.buffer());
 
-        (values.into(), transfer_values)
+        SerializeResult {
+            data: values.into(),
+            transfers,
+        }
     }
 }
 
 impl Serializer {
-    pub fn transfer_value(&mut self, value: JsValue) {
-        self.values.push(&value);
-        self.transfer_values.push(&value);
+    pub fn transfer(&mut self, value: JsValue) {
+        self.transfers.push(&value);
     }
     
     pub fn js_value(&mut self, value: &JsValue) {
@@ -79,8 +86,8 @@ pub struct Deserializer {
 }
 
 impl Deserializer {
-    pub fn new(message: JsValue) -> Result<Self, DeserializerInitializationError> {
-        let message: Array = message.dyn_into()
+    pub fn new(data: JsValue) -> Result<Self, DeserializerInitializationError> {
+        let message: Array = data.dyn_into()
             .map_err(|_| DeserializerInitializationError::Format)?;
 
         let mut values = message.into_iter();
@@ -101,12 +108,6 @@ impl Deserializer {
 }
 
 impl Deserializer {
-    pub fn transfer_value(&mut self) -> Result<JsValue, DeserializeError>
-    {
-        self.values.next()
-            .ok_or_else(|| DeserializeError::Format)
-    }
-    
     pub fn js_value(&mut self) -> Result<JsValue, DeserializeError> {
         self.values.next()
             .ok_or_else(|| DeserializeError::Format)
@@ -139,4 +140,23 @@ where
     Self: Sized
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E>;
+}
+
+pub fn serialize<T, E>(value: T) -> Result<SerializeResult, E>
+where
+    T: Serialize<E>
+{
+    let mut ser = Serializer::new();
+    ser.transferable(value)?;
+    Ok(ser.end())
+}
+
+pub fn deserialize<T, E>(data: JsValue) -> Result<T, E>
+where
+    T: Deserialize<E>,
+    E: From<DeserializerInitializationError>
+{
+    let mut des = Deserializer::new(data)?;
+    let value = des.transferable::<T, E>()?;
+    Ok(value)
 }
