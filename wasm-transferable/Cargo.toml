@@ -16,3 +16,4 @@ wasm-transferable-macro = { path = "../wasm-transferable-macro", optional = true
 derive = ["dep:wasm-transferable-macro"]
 
 std-ext = []
+wasm-bindgen-ext = []

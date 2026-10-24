@@ -3,7 +3,7 @@ use std::vec;
 use js_sys::{Array, ArrayIntoIter, Uint8Array};
 use wasm_bindgen::{JsCast, JsValue};
 
-mod extensions;
+pub mod extensions;
 
 #[cfg(feature = "derive")]
 pub use wasm_transferable_macro::Transferable;
@@ -19,7 +19,7 @@ pub enum DeserializeError {
 pub struct Serializer {
     binary: Vec<u8>,
     values: Array,
-    transfer_values: Array
+    transfers: Array
 }
 
 impl Serializer {
@@ -27,7 +27,7 @@ impl Serializer {
         Self {
             binary: Vec::new(),
             values: Array::new(),
-            transfer_values: Array::new(),
+            transfers: Array::new(),
         }
     }
 
@@ -35,22 +35,21 @@ impl Serializer {
         let Self {
             binary,
             values,
-            transfer_values,
+            transfers,
         } = self;
 
         // バイナリをUint8Arrayにして、valuesの先頭に追加
         let binary_buf = Uint8Array::new_from_slice(&binary);
         values.unshift(&binary_buf);
-        transfer_values.unshift(&binary_buf);
+        transfers.push(&binary_buf.buffer());
 
-        (values.into(), transfer_values)
+        (values.into(), transfers)
     }
 }
 
 impl Serializer {
-    pub fn transfer_value(&mut self, value: JsValue) {
-        self.values.push(&value);
-        self.transfer_values.push(&value);
+    pub fn transfer(&mut self, value: JsValue) {
+        self.transfers.push(&value);
     }
     
     pub fn js_value(&mut self, value: &JsValue) {
@@ -101,12 +100,6 @@ impl Deserializer {
 }
 
 impl Deserializer {
-    pub fn transfer_value(&mut self) -> Result<JsValue, DeserializeError>
-    {
-        self.values.next()
-            .ok_or_else(|| DeserializeError::Format)
-    }
-    
     pub fn js_value(&mut self) -> Result<JsValue, DeserializeError> {
         self.values.next()
             .ok_or_else(|| DeserializeError::Format)
