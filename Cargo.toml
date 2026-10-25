@@ -3,6 +3,7 @@ resolver = "3"
 members = [
     "wasm-transferable",
     "wasm-transferable-macro",
+    "wasm-transferable-stream",
 ]
 
 [workspace.package]
