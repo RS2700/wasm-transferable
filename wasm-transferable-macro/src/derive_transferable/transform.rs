@@ -138,7 +138,7 @@ fn to_ser_impl(
     } = options.unwrap_or_default();
 
     where_clause.expand(where_predicates.predicates);
-    where_clause.expand(expand_type_param_bounds(&error_type_param_ident, error_type_bounds));
+    where_clause.expand(expand_type_param_bounds(&error_type_param_ident, error_type_bounds.into()));
 
     transformed_ast::SerializeImpl {
         implementing_type,
@@ -160,7 +160,7 @@ fn to_des_impl(
     } = options.unwrap_or_default();
 
     where_clause.expand(where_predicates.predicates);
-    where_clause.expand(expand_type_param_bounds(&error_type_param_ident, error_type_bounds));
+    where_clause.expand(expand_type_param_bounds(&error_type_param_ident, error_type_bounds.into()));
 
     transformed_ast::DeserializeImpl {
         implementing_type,
