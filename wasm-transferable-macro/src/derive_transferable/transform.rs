@@ -152,7 +152,7 @@ fn to_des_impl(
     options: Override<source_ast::DeserializeOptions>,
     mut where_clause: Option<syn::WhereClause>
 ) -> transformed_ast::DeserializeImpl {
-    let error_type_param_ident = Ident::new("__SerializeError", Span::call_site());
+    let error_type_param_ident = Ident::new("__DeserializeError", Span::call_site());
 
     let source_ast::DeserializeOptions {
         where_predicates,
