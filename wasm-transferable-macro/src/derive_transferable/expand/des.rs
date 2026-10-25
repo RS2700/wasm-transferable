@@ -28,7 +28,7 @@ pub fn expand(des_impl: DeserializeImpl) -> TokenStream {
         #where_clause
         {
             fn deserialize(des: &mut #deserializer_path) -> #result_path<Self, #error_type_param_ident> {
-                let x = #expr;
+                let x = { #expr };
 
                 #result_path::Ok(x)
             }

@@ -8,6 +8,11 @@ pub mod extensions;
 #[cfg(feature = "derive")]
 pub use wasm_transferable_macro::Transferable;
 
+pub struct SerializeResult {
+    pub data: JsValue,
+    pub transfers: Array
+}
+
 pub enum DeserializerInitializationError {
     Format
 }
@@ -31,7 +36,7 @@ impl Serializer {
         }
     }
 
-    pub fn end(self) -> (JsValue, Array) {
+    pub fn end(self) -> SerializeResult {
         let Self {
             binary,
             values,
@@ -43,7 +48,10 @@ impl Serializer {
         values.unshift(&binary_buf);
         transfers.push(&binary_buf.buffer());
 
-        (values.into(), transfers)
+        SerializeResult {
+            data: values.into(),
+            transfers,
+        }
     }
 }
 
@@ -78,8 +86,8 @@ pub struct Deserializer {
 }
 
 impl Deserializer {
-    pub fn new(message: JsValue) -> Result<Self, DeserializerInitializationError> {
-        let message: Array = message.dyn_into()
+    pub fn new(data: JsValue) -> Result<Self, DeserializerInitializationError> {
+        let message: Array = data.dyn_into()
             .map_err(|_| DeserializerInitializationError::Format)?;
 
         let mut values = message.into_iter();
@@ -132,4 +140,23 @@ where
     Self: Sized
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E>;
+}
+
+pub fn serialize<T, E>(value: T) -> Result<SerializeResult, E>
+where
+    T: Serialize<E>
+{
+    let mut ser = Serializer::new();
+    ser.transferable(value)?;
+    Ok(ser.end())
+}
+
+pub fn deserialize<T, E>(data: JsValue) -> Result<T, E>
+where
+    T: Deserialize<E>,
+    E: From<DeserializerInitializationError>
+{
+    let mut des = Deserializer::new(data)?;
+    let value = des.transferable::<T, E>()?;
+    Ok(value)
 }

@@ -46,7 +46,7 @@ fn expand_expr(body: ImplementingTypeBody) -> TokenStream {
             let ops = expand_ops(item_idents);
 
             quote! {
-                Self #items_expr = self;
+                let Self #items_expr = self;
 
                 #ops
             }
