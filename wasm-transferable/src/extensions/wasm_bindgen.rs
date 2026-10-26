@@ -1,33 +1,21 @@
-use wasm_bindgen::JsCast;
+use wasm_bindgen::JsValue;
 
 use crate::*;
 
-pub enum Error {
-    TypeMismatch
-}
-
-impl<E, T> Serialize<E> for T
-where
-    T: JsCast
-{
+impl<E> Serialize<E> for JsValue {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
-        let js_value = self.unchecked_ref();
-
-        ser.js_value(js_value);
+        ser.js_value(&self);
 
         Ok(())
     }
 }
 
-impl<E, T> Deserialize<E> for T
+impl<E> Deserialize<E> for JsValue
 where
-    E: From<DeserializeError> + From<Error>,
-    T: JsCast
+    E: From<DeserializeError>
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
-        let js_value = des.js_value()?;
-
-        js_value.dyn_into()
-            .map_err(|_| Error::TypeMismatch.into())
+        des.js_value()
+            .map_err(Into::into)
     }
 }
