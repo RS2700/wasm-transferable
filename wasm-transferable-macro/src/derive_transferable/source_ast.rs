@@ -1,5 +1,4 @@
 use darling::{FromDeriveInput, FromField, FromMeta, FromVariant, util::Override};
-use quote::ToTokens;
 use syn::{Ident, Token, parse::Parser, punctuated::Punctuated};
 
 #[derive(Default)]

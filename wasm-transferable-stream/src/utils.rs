@@ -46,7 +46,7 @@ impl CloseAwareMessagePort {
 
         CloseAwareMessagePortListener {
             inner,
-            onmessage: Some(onmessage),
+            _onmessage: Some(onmessage),
         }
     }
 }
@@ -79,7 +79,7 @@ where
 /// Dropされたら、ポートを閉じます。
 pub struct CloseAwareMessagePortListener {
     inner: MessagePort,
-    onmessage: Option<Closure<dyn FnMut(MessageEvent)>>
+    _onmessage: Option<Closure<dyn FnMut(MessageEvent)>>
 }
 
 impl CloseAwareMessagePortListener {
@@ -112,7 +112,7 @@ impl CloseAwareMessagePortListener {
 impl Drop for CloseAwareMessagePortListener {
     fn drop(&mut self) {
         if let Ok(message) = serde_wasm_bindgen::to_value(&CloseAwareMessageEvent::Close) {
-            self.inner.post_message(&message);
+            let _ = self.inner.post_message(&message);
         }
 
         self.inner.close();
