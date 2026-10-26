@@ -82,7 +82,7 @@ fn expand_match_arm(variant: Variant) -> TokenStream {
 
     quote! {
         Self::#ident #items_expr => {
-            ser.fixed_binary([ #(#index),* ])?;
+            ser.fixed_binary([ #(#index),* ]);
 
             #ops
         }
