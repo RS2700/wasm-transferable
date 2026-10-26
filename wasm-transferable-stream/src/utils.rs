@@ -44,6 +44,8 @@ impl CloseAwareMessagePort {
             onmessage(data)
         });
 
+        inner.set_onmessage(Some(onmessage.as_js_value().unchecked_ref()));
+
         CloseAwareMessagePortListener {
             inner,
             _onmessage: Some(onmessage),
@@ -99,12 +101,20 @@ impl CloseAwareMessagePortListener {
     }
 */
     pub fn post_message(&self, message: &JsValue) {
-        self.inner.post_message(message)
+        let message = CloseAwareMessageEvent::Message(message.clone());
+        let message = serde_wasm_bindgen::to_value(&message)
+            .unwrap();
+
+        self.inner.post_message(&message)
             .unwrap()
     }
 
     pub fn post_message_with_transferable(&self, message: &JsValue, transferable: &JsValue) {
-        self.inner.post_message_with_transferable(message, transferable)
+        let message = CloseAwareMessageEvent::Message(message.clone());
+        let message = serde_wasm_bindgen::to_value(&message)
+            .unwrap();
+
+        self.inner.post_message_with_transferable(&message, transferable)
             .unwrap()
     }
 }
