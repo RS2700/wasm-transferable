@@ -8,9 +8,18 @@ license.workspace = true
 
 [dependencies]
 futures = { version = "0.3.34", default-features = false, features = ["alloc", "std"] }
+log = { version = "0.4.34", optional = true }
 serde = { version = "1.0.229", features = ["derive"] }
 serde-wasm-bindgen = "0.6.5"
 wasm-bindgen.workspace = true
 wasm-bindgen-futures = "0.4.79"
 wasm-transferable = { workspace = true, features = ["derive", "std-ext"] }
 web-sys = { version = "0.3.106", features = ["MessageChannel", "MessageEvent", "MessagePort"] }
+
+[dev-dependencies]
+console_log = "1.1.0"
+thiserror = "2.0.21"
+wasm-bindgen-test = "0.3.79"
+
+[features]
+debug-log = ["dep:log"]
