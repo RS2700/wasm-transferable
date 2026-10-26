@@ -1,10 +1,24 @@
+use std::convert::Infallible;
+
+use js_sys::Array;
+use thiserror::Error;
 use wasm_bindgen::prelude::*;
-use wasm_transferable::DeserializeError;
+use wasm_transferable::{DeserializeError, DeserializerInitializationError, Transferable, deserialize, serialize, post_ext::MessagePortPostExt};
 use web_sys::{MessageChannel, MessageEvent, MessagePort};
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Error)]
+enum AnyDeserializeError {
+    #[error("initialization error ({0})")]
+    Initialization(#[from] DeserializerInitializationError),
+    #[error("deserialize error ({0})")]
+    Deserialize(#[from] DeserializeError)
+}
+
+#[derive(Transferable)]
+#[transferable(ser)]
+#[transferable(des(where_error(From<DeserializeError>)))]
 pub enum CloseAwareMessageEvent {
-    Message(#[serde(with = "serde_wasm_bindgen::preserve")] JsValue),
+    Message(JsValue),
     Close
 }
 
@@ -38,7 +52,7 @@ impl CloseAwareMessagePort {
         } = self;
 
         let onmessage = Closure::new(move |e: MessageEvent| {
-            let data: CloseAwareMessageEvent = serde_wasm_bindgen::from_value(e.data())
+            let data: CloseAwareMessageEvent = deserialize::<_, AnyDeserializeError>(e.data())
                 .unwrap();
 
             onmessage(data)
@@ -102,28 +116,32 @@ impl CloseAwareMessagePortListener {
 */
     pub fn post_message(&self, message: &JsValue) {
         let message = CloseAwareMessageEvent::Message(message.clone());
-        let message = serde_wasm_bindgen::to_value(&message)
-            .unwrap();
+        let message = serialize::<_, Infallible>(message)
+            .unwrap_or_else(|x| match x {});
 
-        self.inner.post_message(&message)
+        self.inner.post_transferable_message(message)
             .unwrap()
     }
 
-    pub fn post_message_with_transferable(&self, message: &JsValue, transferable: &JsValue) {
+    pub fn post_message_with_transferable(&self, message: &JsValue, transferable: &Array) {
         let message = CloseAwareMessageEvent::Message(message.clone());
-        let message = serde_wasm_bindgen::to_value(&message)
-            .unwrap();
+        let mut message = serialize::<_, Infallible>(message)
+            .unwrap_or_else(|x| match x {});
 
-        self.inner.post_message_with_transferable(&message, transferable)
+        message.transfers.extend(transferable.iter());
+
+        self.inner.post_transferable_message(message)
             .unwrap()
     }
 }
 
 impl Drop for CloseAwareMessagePortListener {
     fn drop(&mut self) {
-        if let Ok(message) = serde_wasm_bindgen::to_value(&CloseAwareMessageEvent::Close) {
-            let _ = self.inner.post_message(&message);
-        }
+        // Closeを通知
+        let message = serialize::<_, Infallible>(CloseAwareMessageEvent::Close)
+            .unwrap_or_else(|x| match x {});
+        self.inner.post_transferable_message(message)
+            .unwrap();
 
         self.inner.close();
     }
