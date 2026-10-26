@@ -55,6 +55,8 @@ fn expand_expr(body: ImplementingTypeBody) -> TokenStream {
 }
 
 fn expand_expr_match(variant_list: VariantList) -> TokenStream {
+    let deserialize_error_path = assets::crate_root::deserialize_error_path();
+
     let VariantList {
         index_bytes,
         variants,
@@ -66,6 +68,8 @@ fn expand_expr_match(variant_list: VariantList) -> TokenStream {
     quote! {
         match des.fixed_binary::<#index_bytes>()? {
             #(#match_arm),*
+
+            _ => return Err(#deserialize_error_path::Format.into())
         }
     }
 }

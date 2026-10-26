@@ -4,6 +4,11 @@ pub fn path() -> Path {
     syn::parse_quote!(::wasm_transferable)
 }
 
+pub fn deserialize_error_path() -> Path {
+    let root = path();
+    syn::parse_quote!(#root::DeserializeError)
+}
+
 pub fn serializer_path() -> Path {
     let root = path();
     syn::parse_quote!(#root::Serializer)
