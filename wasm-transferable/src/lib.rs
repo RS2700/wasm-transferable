@@ -1,6 +1,7 @@
 use std::vec;
 
 use js_sys::{Array, ArrayIntoIter, Uint8Array};
+use thiserror::Error;
 use wasm_bindgen::{JsCast, JsValue};
 
 pub mod extensions;
@@ -13,11 +14,15 @@ pub struct SerializeResult {
     pub transfers: Array
 }
 
+#[derive(Debug, Error)]
 pub enum DeserializerInitializationError {
+    #[error("data type is invalid")]
     Format
 }
 
+#[derive(Debug, Error)]
 pub enum DeserializeError {
+    #[error("data type is invalid")]
     Format
 }
 

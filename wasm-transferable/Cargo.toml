@@ -9,6 +9,7 @@ license.workspace = true
 [dependencies]
 array-init = "2.1.0"
 js-sys = { version = "0.3.106", default-features = false, features = ["std"] }
+thiserror = "2.0.21"
 wasm-bindgen.workspace = true
 wasm-transferable-macro = { path = "../wasm-transferable-macro", optional = true }
 
