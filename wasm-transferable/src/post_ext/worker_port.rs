@@ -3,11 +3,11 @@ use wasm_bindgen::JsValue;
 use crate::SerializeResult;
 
 pub trait WorkerPostExt {
-    fn post_message(&self, message: SerializeResult) -> Result<(), JsValue>;
+    fn post_transferable_message(&self, message: SerializeResult) -> Result<(), JsValue>;
 }
 
 impl WorkerPostExt for web_sys::Worker {
-    fn post_message(&self, message: SerializeResult) -> Result<(), JsValue> {
+    fn post_transferable_message(&self, message: SerializeResult) -> Result<(), JsValue> {
         let SerializeResult {
             data,
             transfers,
