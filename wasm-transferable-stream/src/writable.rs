@@ -51,10 +51,10 @@ pub enum WriteError<S> {
 }
 
 impl<T> WritableTransferStream<T> {
-    pub fn new<F, E>(mut consumer: F) -> Self
+    pub fn new<F, E>(consumer: F) -> Self
     where
         T: Deserialize<E> + 'static,
-        F: AsyncFnMut(&mut Controller<T, E>) + 'static,
+        F: AsyncFnOnce(&mut Controller<T, E>) + 'static,
         E: From<DeserializerInitializationError> + 'static
     {
         // sending -> recving: ストリームのアイテムを送る

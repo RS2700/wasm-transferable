@@ -56,10 +56,10 @@ pub enum ReadError<D> {
 }
 
 impl<T> ReadableTransferStream<T> {
-    pub fn new<'a, F, E>(mut producer: F) -> Self
+    pub fn new<'a, F, E>(producer: F) -> Self
     where
         T: Serialize<E> + 'static,
-        F: AsyncFnMut(&mut Controller<T, E>) + 'static,
+        F: AsyncFnOnce(&mut Controller<T, E>) + 'static,
         E: 'static
     {
         // sending -> recving: ストリームのアイテムを送る
