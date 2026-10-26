@@ -12,9 +12,14 @@ js-sys = { version = "0.3.106", default-features = false, features = ["std"] }
 thiserror = "2.0.21"
 wasm-bindgen.workspace = true
 wasm-transferable-macro = { path = "../wasm-transferable-macro", optional = true }
+web-sys = { version = "0.3.106", optional = true }
 
 [features]
 derive = ["dep:wasm-transferable-macro"]
 
 std-ext = []
 wasm-bindgen-ext = []
+
+MessagePort-post-ext = ["dep:web-sys", "web-sys/MessagePort"]
+Window-post-ext = ["dep:web-sys", "web-sys/Window"]
+Worker-post-ext = ["dep:web-sys", "web-sys/Worker"]

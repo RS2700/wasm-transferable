@@ -520,6 +520,7 @@ dependencies = [
  "thiserror",
  "wasm-bindgen",
  "wasm-transferable-macro",
+ "web-sys",
 ]
 
 [[package]]

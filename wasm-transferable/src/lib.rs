@@ -6,6 +6,8 @@ use wasm_bindgen::{JsCast, JsValue};
 
 pub mod extensions;
 
+pub mod post_ext;
+
 #[cfg(feature = "derive")]
 pub use wasm_transferable_macro::Transferable;
 
