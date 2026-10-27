@@ -502,7 +502,7 @@ checksum = "4f692aa943ccd88363733b77063f32cfed5bc6cbea8e6e8b251b302f881606fe"
 
 [[package]]
 name = "wasm-transferable"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "array-init",
  "js-sys",
@@ -514,7 +514,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-transferable-macro"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -524,7 +524,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-transferable-stream"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "console_log",
  "futures",
