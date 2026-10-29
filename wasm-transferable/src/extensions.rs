@@ -1,9 +1,5 @@
 #[cfg(feature = "std-ext")]
 mod std;
 
-cfg_select! {
-    feature = "wasm-bindgen-ext" => {
-        pub mod wasm_bindgen;
-    }
-    _ => {}
-}
+#[cfg(feature = "wasm-bindgen-ext")]
+mod wasm_bindgen;

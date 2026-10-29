@@ -71,7 +71,7 @@ impl<E> wasm_transferable::Serialize<E> for CloseAwareMessagePort {
     fn serialize(self, ser: &mut wasm_transferable::Serializer) -> Result<(), E> {
         let inner = self.inner.into();
         ser.js_value(&inner);
-        ser.transfer(inner);
+        ser.transfer(&inner);
 
         Ok(())
     }
