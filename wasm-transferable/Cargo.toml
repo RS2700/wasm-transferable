@@ -3,8 +3,11 @@ name = "wasm-transferable"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
+description = "Serialize Rust structs into JsValue while collecting Transferable Objects"
 repository.workspace = true
 license.workspace = true
+keywords = ["wasm", "transferable", "web-worker", "messaging", "serde"]
+categories = ["encoding", "wasm", "web-programming"]
 
 [dependencies]
 array-init = "2.1.0"

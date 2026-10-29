@@ -3,8 +3,11 @@ name = "wasm-transferable-stream"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
+description = "A Stream API-like ecosystem for wasm-transferable"
 repository.workspace = true
 license.workspace = true
+keywords = ["wasm", "transferable", "web-worker", "stream", "channel"]
+categories = ["encoding", "wasm", "web-programming", "asynchronous"]
 
 [dependencies]
 futures = { version = "0.3.34", default-features = false, features = ["alloc", "std"] }
