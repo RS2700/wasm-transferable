@@ -7,8 +7,6 @@ use wasm_transferable::*;
 
 use crate::utils::{CloseAwareMessageEvent, CloseAwareMessagePort, CloseAwareMessagePortListener};
 
-/// Channel Messaging APIを使って、WritableStreamを模倣するもの。
-/// Transferable Objectを転送できます。
 #[derive(Transferable)]
 #[transferable(ser)]
 #[transferable(des(where_error(From<DeserializeError>)))]
