@@ -1,11 +1,11 @@
 # wasm-transferable
 
 > [!WARNING]
-> **現在、本ライブラリはプロトタイプの段階です。**
+> **This library is currently in a prototype stage.**
 > 
-> 計画中の全ての機能が実装されていますが、予期せぬ不具合が発生する可能性があり、後方互換性は保証されていません。
+> While all planned features have been implemented, unexpected bugs may occur, and backwards compatibility is not guaranteed.
 > 
-> 本番環境での使用は推奨しません。
+> Use in production environments is not recommended.
 
 ## License
 
