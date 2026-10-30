@@ -1,35 +1,36 @@
 # wasm-transferable
 
-Rustの構造体を `JsValue` へシリアライズすると同時に、それに含まれる [`Transferable Objects`](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Transferable_objects) を収集するフレームワーク。
+A framework that serializes Rust structs into `JsValue`
+while simultaneously collecting any contained [`Transferable Objects`](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Transferable_objects).
 
 > [!WARNING]
-> **現在、本ライブラリはプロトタイプの段階です。**
+> **This library is currently in a prototype stage.**
 > 
-> 計画中の全ての機能が実装されていますが、予期せぬ不具合が発生する可能性があり、後方互換性は保証されていません。
+> While all planned features have been implemented, unexpected bugs may occur, and backwards compatibility is not guaranteed.
 > 
-> 本番環境での使用は推奨しません。
+> Use in production environments is not recommended.
 
 ## features
 ### derive
 
-`Transferable` deriveマクロを提供します。
+Provides the `Transferable` derive macro.
 
 ### std-ext
 
-`std` ライブラリの型に、`Serialize`, `Deserialize` トレイトを実装します。
+Implements the `Serialize` and `Deserialize` traits for standard library (std) types.
 
 ### wasm-bindgen-ext
 
-`wasm-bindgen` クレートの型に、`Serialize`, `Deserialize` トレイトを実装します。
+Implements the `Serialize` and `Deserialize` traits for types provided by the `wasm-bindgen` crate.
 
 ### MessagePort-post-ext
 
-`web_sys::MessagePort` に、直接 `SerializeResult` をポストできる拡張トレイトを実装します。
+Provides an extension trait to post a `SerializeResult` directly to a `web_sys::MessagePort`.
 
 ### Window-post-ext
 
-`web_sys::Window` に、直接 `SerializeResult` をポストできる拡張トレイトを実装します。
+Provides an extension trait to post a `SerializeResult` directly to a `web_sys::Window`.
 
 ### Worker-post-ext
 
-`web_sys::Worker` に、直接 `SerializeResult` をポストできる拡張トレイトを実装します。
+Provides an extension trait to post a `SerializeResult` directly to a `web_sys::Worker`.
