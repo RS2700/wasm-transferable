@@ -14,4 +14,4 @@ repository = "https://github.com/RS2700/wasm-transferable"
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
-wasm-transferable = { path = "wasm-transferable" }
+wasm-transferable = { version = "=0.1.1", path = "wasm-transferable" }
