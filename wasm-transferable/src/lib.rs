@@ -31,7 +31,7 @@
 //! specifying a [`From`] trait bound like `From<MyError>` on the error type
 //! makes it much easier to smoothly integrate error handling across types.
 
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 use std::vec;
 
