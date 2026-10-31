@@ -40,3 +40,14 @@ jobs:
           tool: wasm-pack, cargo-workspaces
 
       - run: cargo ws exec bash ./ci/test.sh
+  doc:
+    runs-on: ubuntu-latest
+    env:
+      RUSTDOCFLAGS: -Dwarnings
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: Swatinem/rust-cache@v2
+      - uses: dtolnay/install@cargo-docs-rs
+
+      - run: cargo docs-rs
