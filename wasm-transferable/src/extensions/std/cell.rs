@@ -4,8 +4,8 @@ use crate::{Deserialize, DeserializeError, Deserializer, Serialize, Serializer};
 
 impl<T, E> Serialize<E> for Cell<T>
 where
-    T: Serialize<E>
-{ 
+    T: Serialize<E>,
+{
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         self.into_inner().serialize(ser)
     }
@@ -13,7 +13,7 @@ where
 
 impl<T, E> Deserialize<E> for Cell<T>
 where
-    T: Deserialize<E>
+    T: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let inner = T::deserialize(des)?;
@@ -23,8 +23,8 @@ where
 
 impl<T, E> Serialize<E> for OnceCell<T>
 where
-    T: Serialize<E>
-{ 
+    T: Serialize<E>,
+{
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         Option::<T>::serialize(self.into_inner(), ser)
     }
@@ -33,13 +33,12 @@ where
 impl<T, E> Deserialize<E> for OnceCell<T>
 where
     T: Deserialize<E>,
-    E: From<DeserializeError>
+    E: From<DeserializeError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let cell = Self::new();
         if let Some(inner) = Option::<T>::deserialize(des)? {
-            cell.set(inner)
-                .unwrap_or_else(|_| panic!());
+            cell.set(inner).unwrap_or_else(|_| panic!());
         }
         Ok(cell)
     }
@@ -47,8 +46,8 @@ where
 
 impl<T, E> Serialize<E> for UnsafeCell<T>
 where
-    T: Serialize<E>
-{ 
+    T: Serialize<E>,
+{
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         self.into_inner().serialize(ser)
     }
@@ -56,7 +55,7 @@ where
 
 impl<T, E> Deserialize<E> for UnsafeCell<T>
 where
-    T: Deserialize<E>
+    T: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let inner = T::deserialize(des)?;

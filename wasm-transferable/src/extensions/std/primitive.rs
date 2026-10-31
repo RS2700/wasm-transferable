@@ -11,7 +11,7 @@ macro_rules! numeric {
 
         impl<E> Deserialize<E> for $ty
         where
-            E: From<DeserializeError>
+            E: From<DeserializeError>,
         {
             fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
                 let bin = des.fixed_binary()?;
@@ -46,7 +46,7 @@ impl<E> Serialize<E> for bool {
 
 impl<E> Deserialize<E> for bool
 where
-    E: From<DeserializeError>
+    E: From<DeserializeError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let x = des.byte()?;
@@ -62,11 +62,10 @@ impl<E> Serialize<E> for char {
 
 impl<E> Deserialize<E> for char
 where
-    E: From<DeserializeError>
+    E: From<DeserializeError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let n: u32 = Deserialize::deserialize(des)?;
-        char::from_u32(n)
-            .ok_or(DeserializeError::Format.into())
+        char::from_u32(n).ok_or(DeserializeError::Format.into())
     }
 }

@@ -12,12 +12,11 @@ macro_rules! non_zero {
 
         impl<E> Deserialize<E> for $ty
         where
-            E: From<DeserializeError>
+            E: From<DeserializeError>,
         {
             fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
                 let inner = Deserialize::deserialize(des)?;
-                NonZero::new(inner)
-                    .ok_or(DeserializeError::Format.into())
+                NonZero::new(inner).ok_or(DeserializeError::Format.into())
             }
         }
     };
@@ -37,7 +36,7 @@ non_zero!(NonZeroU128);
 
 impl<E, T> Serialize<E> for Saturating<T>
 where
-    T: Serialize<E>
+    T: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         T::serialize(self.0, ser)
@@ -46,7 +45,7 @@ where
 
 impl<E, T> Deserialize<E> for Saturating<T>
 where
-    T: Deserialize<E>
+    T: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let inner = T::deserialize(des)?;
@@ -56,7 +55,7 @@ where
 
 impl<E, T> Serialize<E> for Wrapping<T>
 where
-    T: Serialize<E>
+    T: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         T::serialize(self.0, ser)
@@ -65,7 +64,7 @@ where
 
 impl<E, T> Deserialize<E> for Wrapping<T>
 where
-    T: Deserialize<E>
+    T: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let inner = T::deserialize(des)?;
@@ -89,7 +88,7 @@ impl<E> Serialize<E> for FpCategory {
 
 impl<E> Deserialize<E> for FpCategory
 where
-    E: From<DeserializeError>
+    E: From<DeserializeError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let n: u8 = des.transferable()?;
@@ -100,7 +99,7 @@ where
             2 => Self::Zero,
             3 => Self::Subnormal,
             4 => Self::Normal,
-            _ => return Err(DeserializeError::Format.into())
+            _ => return Err(DeserializeError::Format.into()),
         };
 
         Ok(x)

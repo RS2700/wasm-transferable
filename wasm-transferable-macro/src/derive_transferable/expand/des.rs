@@ -38,9 +38,7 @@ pub fn expand(des_impl: DeserializeImpl) -> TokenStream {
 
 fn expand_expr(body: ImplementingTypeBody) -> TokenStream {
     match body {
-        ImplementingTypeBody::Enum(variant_list) => {
-            expand_expr_match(variant_list)
-        },
+        ImplementingTypeBody::Enum(variant_list) => expand_expr_match(variant_list),
         ImplementingTypeBody::Struct(items) => {
             let (items_expr, item_idents) = super::expand_items(items);
             let ops = expand_ops(item_idents);
@@ -50,7 +48,7 @@ fn expand_expr(body: ImplementingTypeBody) -> TokenStream {
 
                 Self #items_expr
             }
-        },
+        }
     }
 }
 
@@ -62,8 +60,7 @@ fn expand_expr_match(variant_list: VariantList) -> TokenStream {
         variants,
     } = variant_list;
 
-    let match_arm = variants.into_iter()
-        .map(expand_match_arm);
+    let match_arm = variants.into_iter().map(expand_match_arm);
 
     quote! {
         match des.fixed_binary::<#index_bytes>()? {

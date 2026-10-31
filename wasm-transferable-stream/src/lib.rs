@@ -1,5 +1,5 @@
 //! A [`wasm_transferable`] ecosystem for streaming Transferable Objects with a Web Stream API-like interface.
-//! 
+//!
 //! <div class="warning">
 //! <p><strong>WARNING:</strong> This library is currently in a prototype stage.</p>
 //! <p>

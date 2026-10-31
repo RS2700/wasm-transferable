@@ -13,13 +13,10 @@ impl<E> Serialize<E> for Duration {
 
 impl<E> Deserialize<E> for Duration
 where
-    E: From<DeserializeError>
+    E: From<DeserializeError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
-        let x = Self::new(
-            des.transferable()?,
-            des.transferable()?
-        );
+        let x = Self::new(des.transferable()?, des.transferable()?);
         Ok(x)
     }
 }

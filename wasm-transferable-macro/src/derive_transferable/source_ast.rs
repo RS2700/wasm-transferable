@@ -3,7 +3,7 @@ use syn::{Ident, Token, parse::Parser, punctuated::Punctuated};
 
 #[derive(Default)]
 pub struct TypeParamBounds {
-    pub bounds: Punctuated<syn::TypeParamBound, Token![+]>
+    pub bounds: Punctuated<syn::TypeParamBound, Token![+]>,
 }
 
 impl FromMeta for TypeParamBounds {
@@ -12,9 +12,9 @@ impl FromMeta for TypeParamBounds {
             syn::Meta::Path(_) => Self::from_word(),
             syn::Meta::List(ref value) => {
                 let tokens = value.tokens.clone();
-                
+
                 let parser = Punctuated::<syn::TypeParamBound, Token![+]>::parse_separated_nonempty;
-                
+
                 Ok(Self {
                     bounds: parser.parse2(tokens)?,
                 })
@@ -41,12 +41,12 @@ pub struct Field {
 #[darling(attributes(transferable))]
 pub struct Variant {
     pub ident: Ident,
-    pub fields: darling::ast::Fields<Field>
+    pub fields: darling::ast::Fields<Field>,
 }
 
 #[derive(Default)]
 pub struct WherePredicates {
-    pub predicates: Vec<syn::WherePredicate>
+    pub predicates: Vec<syn::WherePredicate>,
 }
 
 impl WherePredicates {
@@ -76,7 +76,7 @@ pub struct TransferableDeriveInput {
     pub des: Option<Override<DeserializeOptions>>,
 
     #[darling(default, multiple, rename = "where")]
-    pub where_predicates: WherePredicates
+    pub where_predicates: WherePredicates,
 }
 
 #[derive(Default, FromMeta)]
@@ -85,7 +85,7 @@ pub struct SerializeOptions {
     pub where_predicates: WherePredicates,
 
     #[darling(default, rename = "where_error")]
-    pub error_type_bounds: TypeParamBounds
+    pub error_type_bounds: TypeParamBounds,
 }
 
 #[derive(Default, FromMeta)]
@@ -94,5 +94,5 @@ pub struct DeserializeOptions {
     pub where_predicates: WherePredicates,
 
     #[darling(default, rename = "where_error")]
-    pub error_type_bounds: TypeParamBounds
+    pub error_type_bounds: TypeParamBounds,
 }

@@ -12,10 +12,9 @@ impl<E> Serialize<E> for JsValue {
 
 impl<E> Deserialize<E> for JsValue
 where
-    E: From<DeserializeError>
+    E: From<DeserializeError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
-        des.js_value()
-            .map_err(Into::into)
+        des.js_value().map_err(Into::into)
     }
 }

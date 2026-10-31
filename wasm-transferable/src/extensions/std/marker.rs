@@ -4,7 +4,7 @@ use crate::{Deserialize, Deserializer, Serialize, Serializer};
 
 impl<T, E> Serialize<E> for PhantomData<T>
 where
-    T: ?Sized
+    T: ?Sized,
 {
     fn serialize(self, _ser: &mut Serializer) -> Result<(), E> {
         Ok(())
@@ -13,7 +13,7 @@ where
 
 impl<T, E> Deserialize<E> for PhantomData<T>
 where
-    T: ?Sized
+    T: ?Sized,
 {
     fn deserialize(_des: &mut Deserializer) -> Result<Self, E> {
         Ok(PhantomData)

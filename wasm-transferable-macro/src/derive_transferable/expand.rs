@@ -8,10 +8,7 @@ mod des;
 mod ser;
 
 pub fn expand(transformed: DeriveTransferable) -> TokenStream {
-    let DeriveTransferable {
-        ser_impl,
-        des_impl,
-    } = transformed;
+    let DeriveTransferable { ser_impl, des_impl } = transformed;
 
     let ser = ser_impl.map(ser::expand);
     let des = des_impl.map(des::expand);
@@ -23,7 +20,6 @@ pub fn expand(transformed: DeriveTransferable) -> TokenStream {
     }
 }
 
-
 fn expand_items(items: Items) -> (TokenStream, Box<[Ident]>) {
     match items {
         Items::Struct(items) => {
@@ -34,24 +30,20 @@ fn expand_items(items: Items) -> (TokenStream, Box<[Ident]>) {
             };
 
             (ts, item_idents)
-        },
+        }
         Items::Tuple(items) => {
             let item_idents = expand_item_idents(items);
 
             let ts = quote! {
                 ( #(#item_idents),* )
             };
-            
+
             (ts, item_idents)
-        },
-        Items::Unit => {
-            Default::default()
-        },
+        }
+        Items::Unit => Default::default(),
     }
 }
 
 fn expand_item_idents(items: Box<[Item]>) -> Box<[Ident]> {
-    items.into_iter()
-        .map(|x| x.ident)
-        .collect()
+    items.into_iter().map(|x| x.ident).collect()
 }

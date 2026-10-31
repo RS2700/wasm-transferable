@@ -12,7 +12,7 @@ enum MyDeserializeError {
     #[error("init ({0})")]
     Init(#[from] DeserializerInitializationError),
     #[error("des ({0})")]
-    Des(#[from] DeserializeError)
+    Des(#[from] DeserializeError),
 }
 
 #[wasm_bindgen_test]
@@ -32,20 +32,18 @@ async fn readable() {
             }
         });
 
-        let result = wasm_transferable::serialize(stream)
-            .unwrap_or_else(|x: Infallible| match x {});
+        let result =
+            wasm_transferable::serialize(stream).unwrap_or_else(|x: Infallible| match x {});
 
         result.data
     };
 
-    let stream = wasm_transferable::deserialize::<MyStream, MyDeserializeError>(serial)
-        .unwrap();
+    let stream = wasm_transferable::deserialize::<MyStream, MyDeserializeError>(serial).unwrap();
 
     let mut reader = stream.into_reader::<MyDeserializeError>();
 
     for item in items {
-        let readed = reader.read().await
-            .unwrap();
+        let readed = reader.read().await.unwrap();
 
         assert_eq!(readed, item)
     }
@@ -67,8 +65,7 @@ async fn writable() {
 
         let stream = MyStream::new::<_, MyDeserializeError>(async move |controller| {
             for item in items {
-                let getted = controller.recv().await
-                    .unwrap();
+                let getted = controller.recv().await.unwrap();
 
                 assert_eq!(getted, item)
             }
@@ -79,19 +76,17 @@ async fn writable() {
             ));
         });
 
-        let result = wasm_transferable::serialize(stream)
-            .unwrap_or_else(|x: Infallible| match x {});
+        let result =
+            wasm_transferable::serialize(stream).unwrap_or_else(|x: Infallible| match x {});
 
         result.data
     };
 
-    let stream = wasm_transferable::deserialize::<MyStream, MyDeserializeError>(serial)
-        .unwrap();
+    let stream = wasm_transferable::deserialize::<MyStream, MyDeserializeError>(serial).unwrap();
 
     let mut writer = stream.into_writer::<Infallible>();
 
     for item in items {
-        writer.write(item).await
-            .unwrap();
+        writer.write(item).await.unwrap();
     }
 }

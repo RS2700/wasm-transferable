@@ -8,10 +8,7 @@ pub trait MessagePortPostExt {
 
 impl MessagePortPostExt for web_sys::MessagePort {
     fn post_transferable_message(&self, message: SerializeResult) -> Result<(), JsValue> {
-        let SerializeResult {
-            data,
-            transfers,
-        } = message;
+        let SerializeResult { data, transfers } = message;
 
         self.post_message_with_transferable(&data, transfers.as_ref())
     }

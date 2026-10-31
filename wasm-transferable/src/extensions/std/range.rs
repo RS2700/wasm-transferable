@@ -6,13 +6,10 @@ mod legacy;
 
 impl<E, Idx> Serialize<E> for Range<Idx>
 where
-    Idx: Serialize<E>
+    Idx: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
-        let Self {
-            start,
-            end,
-        } = self;
+        let Self { start, end } = self;
 
         ser.transferable(start)?;
         ser.transferable(end)?;
@@ -23,7 +20,7 @@ where
 
 impl<E, Idx> Deserialize<E> for Range<Idx>
 where
-    Idx: Deserialize<E>
+    Idx: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let x = Self {
@@ -37,12 +34,10 @@ where
 
 impl<E, Idx> Serialize<E> for RangeFrom<Idx>
 where
-    Idx: Serialize<E>
+    Idx: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
-        let Self {
-            start
-        } = self;
+        let Self { start } = self;
 
         ser.transferable(start)
     }
@@ -50,11 +45,11 @@ where
 
 impl<E, Idx> Deserialize<E> for RangeFrom<Idx>
 where
-    Idx: Deserialize<E>
+    Idx: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let x = Self {
-            start: des.transferable()?
+            start: des.transferable()?,
         };
 
         Ok(x)
@@ -75,13 +70,10 @@ impl<E> Deserialize<E> for RangeFull {
 
 impl<E, Idx> Serialize<E> for RangeInclusive<Idx>
 where
-    Idx: Serialize<E>
+    Idx: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
-        let Self {
-            start,
-            last,
-        } = self;
+        let Self { start, last } = self;
 
         ser.transferable(start)?;
         ser.transferable(last)?;
@@ -92,7 +84,7 @@ where
 
 impl<E, Idx> Deserialize<E> for RangeInclusive<Idx>
 where
-    Idx: Deserialize<E>
+    Idx: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let x = Self {
@@ -106,12 +98,10 @@ where
 
 impl<E, Idx> Serialize<E> for RangeTo<Idx>
 where
-    Idx: Serialize<E>
+    Idx: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
-        let Self {
-            end,
-        } = self;
+        let Self { end } = self;
 
         ser.transferable(end)
     }
@@ -119,7 +109,7 @@ where
 
 impl<E, Idx> Deserialize<E> for RangeTo<Idx>
 where
-    Idx: Deserialize<E>
+    Idx: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let x = Self {
@@ -132,12 +122,10 @@ where
 
 impl<E, Idx> Serialize<E> for RangeToInclusive<Idx>
 where
-    Idx: Serialize<E>
+    Idx: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
-        let Self {
-            last,
-        } = self;
+        let Self { last } = self;
 
         ser.transferable(last)
     }
@@ -145,7 +133,7 @@ where
 
 impl<E, Idx> Deserialize<E> for RangeToInclusive<Idx>
 where
-    Idx: Deserialize<E>
+    Idx: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let x = Self {

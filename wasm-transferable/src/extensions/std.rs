@@ -16,8 +16,8 @@ mod tuple;
 
 impl<T, E> Serialize<E> for Box<T>
 where
-    T: Serialize<E>
-{ 
+    T: Serialize<E>,
+{
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         (*self).serialize(ser)
     }
@@ -25,7 +25,7 @@ where
 
 impl<T, E> Deserialize<E> for Box<T>
 where
-    T: Deserialize<E>
+    T: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let inner = T::deserialize(des)?;
@@ -35,7 +35,7 @@ where
 
 impl<E, T> Serialize<E> for AssertUnwindSafe<T>
 where
-    T: Serialize<E>
+    T: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         self.0.serialize(ser)
@@ -44,7 +44,7 @@ where
 
 impl<E, T> Deserialize<E> for AssertUnwindSafe<T>
 where
-    T: Deserialize<E>
+    T: Deserialize<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let inner = T::deserialize(des)?;
@@ -54,17 +54,17 @@ where
 
 impl<T, E> Serialize<E> for Option<T>
 where
-    T: Serialize<E>
+    T: Serialize<E>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), E> {
         match self {
             Some(x) => {
                 ser.transferable(true)?;
                 ser.transferable(x)?;
-            },
+            }
             None => {
                 ser.transferable(false)?;
-            },
+            }
         }
 
         Ok(())
@@ -74,7 +74,7 @@ where
 impl<T, E> Deserialize<E> for Option<T>
 where
     T: Deserialize<E>,
-    E: From<DeserializeError> + From<E>
+    E: From<DeserializeError> + From<E>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, E> {
         let is_some = des.transferable::<bool, E>()?;
@@ -92,18 +92,18 @@ where
 impl<T, E, SerError> Serialize<SerError> for Result<T, E>
 where
     T: Serialize<SerError>,
-    E: Serialize<SerError>
+    E: Serialize<SerError>,
 {
     fn serialize(self, ser: &mut Serializer) -> Result<(), SerError> {
         match self {
             Ok(x) => {
                 ser.transferable(true)?;
                 ser.transferable(x)?;
-            },
+            }
             Err(err) => {
                 ser.transferable(false)?;
                 ser.transferable(err)?;
-            },
+            }
         }
 
         Ok(())
@@ -114,7 +114,7 @@ impl<T, E, DesError> Deserialize<DesError> for Result<T, E>
 where
     T: Deserialize<DesError>,
     E: Deserialize<DesError>,
-    DesError: From<DeserializeError> + From<DesError>
+    DesError: From<DeserializeError> + From<DesError>,
 {
     fn deserialize(des: &mut Deserializer) -> Result<Self, DesError> {
         let is_ok = des.transferable::<bool, DesError>()?;
