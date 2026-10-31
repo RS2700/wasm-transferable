@@ -49,5 +49,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@nightly
       - uses: Swatinem/rust-cache@v2
       - uses: dtolnay/install@cargo-docs-rs
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-workspaces
 
-      - run: cargo docs-rs
+      - run: cargo ws exec cargo docs-rs
