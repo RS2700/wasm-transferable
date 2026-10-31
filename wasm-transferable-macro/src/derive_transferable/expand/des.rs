@@ -63,7 +63,7 @@ fn expand_expr_match(variant_list: VariantList) -> TokenStream {
     } = variant_list;
 
     let match_arm = variants.into_iter()
-        .map(|variant| expand_match_arm(variant));
+        .map(expand_match_arm);
 
     quote! {
         match des.fixed_binary::<#index_bytes>()? {
@@ -93,6 +93,7 @@ fn expand_match_arm(variant: Variant) -> TokenStream {
     }
 }
 
+#[allow(clippy::boxed_local)]
 fn expand_ops(item_idents: Box<[Ident]>) -> TokenStream {
     quote! {
         #(

@@ -171,6 +171,7 @@ pub struct Serializer {
 
 impl Serializer {
     /// Creates a new serializer.
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {
             binary: Vec::new(),
@@ -275,7 +276,7 @@ impl Deserializer {
     /// Deserialize a [`JsValue`] value.
     pub fn js_value(&mut self) -> Result<JsValue, DeserializeError> {
         self.values.next()
-            .ok_or_else(|| DeserializeError::Format)
+            .ok_or(DeserializeError::Format)
     }
 
     /// Deserialize a value implementing [`Deserialize`].

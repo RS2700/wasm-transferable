@@ -54,7 +54,7 @@ pub enum ReadError<D> {
 }
 
 impl<T> ReadableTransferStream<T> {
-    pub fn new<'a, F, E>(producer: F) -> Self
+    pub fn new<F, E>(producer: F) -> Self
     where
         T: Serialize<E> + 'static,
         F: AsyncFnOnce(&mut Controller<T, E>) + 'static,

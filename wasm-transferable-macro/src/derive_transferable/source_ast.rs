@@ -25,9 +25,9 @@ impl FromMeta for TypeParamBounds {
     }
 }
 
-impl Into<Punctuated<syn::TypeParamBound, Token![+]>> for TypeParamBounds {
-    fn into(self) -> Punctuated<syn::TypeParamBound, Token![+]> {
-        self.bounds
+impl From<TypeParamBounds> for Punctuated<syn::TypeParamBound, Token![+]> {
+    fn from(val: TypeParamBounds) -> Self {
+        val.bounds
     }
 }
 

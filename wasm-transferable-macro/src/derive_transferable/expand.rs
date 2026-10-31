@@ -13,8 +13,8 @@ pub fn expand(transformed: DeriveTransferable) -> TokenStream {
         des_impl,
     } = transformed;
 
-    let ser = ser_impl.map(|ser_impl| ser::expand(ser_impl));
-    let des = des_impl.map(|des_impl| des::expand(des_impl));
+    let ser = ser_impl.map(ser::expand);
+    let des = des_impl.map(des::expand);
 
     quote! {
         #ser
