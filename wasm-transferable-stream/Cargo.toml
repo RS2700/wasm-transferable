@@ -24,5 +24,4 @@ wasm-transferable = { workspace = true, features = ["MessagePort-post-ext", "der
 web-sys = { version = "0.3.106", features = ["MessageChannel", "MessageEvent", "MessagePort"] }
 
 [dev-dependencies]
-console_log = "1.1.0"
 wasm-bindgen-test = "0.3.79"

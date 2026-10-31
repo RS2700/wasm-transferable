@@ -19,9 +19,6 @@ enum MyDeserializeError {
 async fn readable() {
     type MyStream = ReadableTransferStream<i32>;
 
-    #[cfg(feature = "debug-log")]
-    let _ = console_log::init_with_level(log::Level::Debug);
-
     let items = 0..5;
 
     let serial = {
@@ -62,9 +59,6 @@ async fn readable() {
 #[wasm_bindgen_test]
 async fn writable() {
     type MyStream = WritableTransferStream<i32>;
-
-    #[cfg(feature = "debug-log")]
-    let _ = console_log::init_with_level(log::Level::Debug);
 
     let items = 0..5;
 
