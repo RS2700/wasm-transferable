@@ -1,0 +1,16 @@
+[package]
+name = "wasm-transferable-macro"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+darling = "0.24.1"
+proc-macro2 = "1.0.107"
+quote = "1.0.47"
+syn = "3.0.9"
