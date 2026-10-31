@@ -26,6 +26,8 @@ jobs:
         run: cargo fmt -- --check
   test:
     runs-on: ubuntu-latest
+    env:
+      RUSTDOCFLAGS: -Dwarnings
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
@@ -37,4 +39,4 @@ jobs:
         with:
           tool: wasm-pack, cargo-workspaces
 
-      - run: RUSTFLAGS="-D warnings" cargo ws exec bash ./ci/test.sh
+      - run: cargo ws exec bash ./ci/test.sh
