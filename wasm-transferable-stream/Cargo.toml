@@ -1,6 +1,6 @@
 [package]
 name = "wasm-transferable-stream"
-version = "0.1.1"
+version = "0.1.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "A Stream API-like ecosystem for wasm-transferable"
@@ -20,7 +20,7 @@ js-sys = { version = "0.3.106", default-features = false, features = ["std"] }
 thiserror = "2.0.21"
 wasm-bindgen = "0.2.129"
 wasm-bindgen-futures = "0.4.79"
-wasm-transferable = { workspace = true, features = ["MessagePort-post-ext", "derive", "std-ext", "wasm-bindgen-ext"] }
+wasm-transferable = { version = "=0.1.2", path = "../wasm-transferable", features = ["MessagePort-post-ext", "derive", "std-ext", "wasm-bindgen-ext"] }
 web-sys = { version = "0.3.106", features = ["MessageChannel", "MessageEvent", "MessagePort"] }
 
 [dev-dependencies]
