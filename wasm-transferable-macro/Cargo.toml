@@ -3,6 +3,7 @@ name = "wasm-transferable-macro"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
+description = "Internal proc-macro crate for wasm-transferable. Please use the main wasm-transferable crate directly."
 repository.workspace = true
 license.workspace = true
 
