@@ -27,7 +27,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      RUSTDOCFLAGS: -Dwarnings
+      RUSTFLAGS: -Dwarnings
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
