@@ -203,7 +203,7 @@ impl Serializer {
 impl Serializer {
     /// Adds Transferable Objects to the transfer list.
     ///
-    /// > **Note:** This **only** adds them to the transfer list to mark them for transfer.
+    /// > **Note**: This **only** adds them to the transfer list to mark them for transfer.
     /// >
     /// > **It must be used in conjunction with [`Serializer::js_value()`].**
     ///
@@ -299,17 +299,17 @@ impl Deserializer {
 
 /// Serialize to [`JsValue`] while collecting Transferable Objects.
 ///
-/// > note: Using the [`derive@wasm_transferable_macro::Transferable`] derive macro is convenient and safe.
+/// > **Note**: Using the [`derive@wasm_transferable_macro::Transferable`] derive macro is convenient and safe.
 pub trait Serialize<E> {
     /// Consumes `self` to perform serialization.
     ///
-    /// > 注意: The serialization order must match [`Deserialize::deserialize`].
+    /// > **Note**: The serialization order must match [`Deserialize::deserialize`].
     fn serialize(self, ser: &mut Serializer) -> Result<(), E>;
 }
 
 /// Deserialize a type from a [`JsValue`].
 ///
-/// > note: Using the [`derive@wasm_transferable_macro::Transferable`] derive macro is convenient and safe.
+/// > **Note**: Using the [`derive@wasm_transferable_macro::Transferable`] derive macro is convenient and safe.
 pub trait Deserialize<E>
 where
     Self: Sized,
@@ -332,7 +332,7 @@ where
 
 /// Deserializes a [`JsValue`] into any type implementing [`Deserialize`].
 ///
-/// > **Note:** If the `data` argument is not an intended value[^1], **deserialization may succeed without error, yielding unexpected results**.
+/// > **Note**: If the `data` argument is not an intended value[^1], **deserialization may succeed without error, yielding unexpected results**.
 ///
 /// [^1]: An *intended value* refers to a [`SerializeResult::data`] produced by the [`serialize`] function with a matching type argument `T`.
 pub fn deserialize<T, E>(data: JsValue) -> Result<T, E>
