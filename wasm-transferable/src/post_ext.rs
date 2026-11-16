@@ -1,4 +1,12 @@
 cfg_select! {
+    feature = "DedicatedWorkerGlobalScope-post-ext" => {
+        mod dedicated_worker_global_scope;
+        pub use dedicated_worker_global_scope::*;
+    }
+    _ => {}
+}
+
+cfg_select! {
     feature = "MessagePort-post-ext" => {
         mod message_port;
         pub use message_port::*;

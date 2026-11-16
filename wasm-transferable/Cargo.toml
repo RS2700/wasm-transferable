@@ -31,6 +31,7 @@ derive = ["dep:wasm-transferable-macro"]
 std-ext = []
 wasm-bindgen-ext = []
 
+DedicatedWorkerGlobalScope-post-ext = ["dep:web-sys", "web-sys/DedicatedWorkerGlobalScope"]
 MessagePort-post-ext = ["dep:web-sys", "web-sys/MessagePort"]
 Window-post-ext = ["dep:web-sys", "web-sys/Window"]
 Worker-post-ext = ["dep:web-sys", "web-sys/Worker"]
