@@ -51,25 +51,6 @@ jobs:
           targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
       - uses: dtolnay/install@cargo-docs-rs
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-workspaces
-
-      - run: cargo ws exec cargo docs-rs
-
-  publish:
-    runs-on: ubuntu-latest
-    needs: [code-check, test, doc]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: ${{ vars.RUST_VERSION }}
-          targets: wasm32-unknown-unknown
-      - uses: Swatinem/rust-cache@v2
-
-      - name: "Publish to crates.io"
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: cargo publish --workspace --no-verify
+      
+      - run: cd wasm-transferable && cargo docs-rs
+      - run: cd wasm-transferable-macro && cargo docs-rs
