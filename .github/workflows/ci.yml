@@ -39,9 +39,15 @@ jobs:
       - run: cd wasm-transferable && wasm-pack test --chrome --headless
   doc:
     runs-on: ubuntu-latest
+    env:
+      RUSTDOCFLAGS: -Dwarnings
     steps:
       - uses: actions/checkout@v7
-      - uses: rust-lang/docs.rs/github-actions/build@main
+      - uses: dtolnay/rust-toolchain@nightly
         with:
-          package: wasm-transferable
-          strict: "true"
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - uses: dtolnay/install@cargo-docs-rs
+      
+      - run: cd wasm-transferable && cargo docs-rs
+      - run: cd wasm-transferable-macro && cargo docs-rs
